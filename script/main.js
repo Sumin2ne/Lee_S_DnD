@@ -20,14 +20,19 @@ let navButtons = document.querySelectorAll('#buttonHolder img'),
 //functions go in the middle 
 //these are the "actions" that should happen
 function changeBGImage() {
-	debugger;
+
+	let newBGPath ="images/background" + this.id +".jpg";
+	// debugger;
+	
 	//object.property = "new value"
 	//theHeadLine.textContent = "Drag and Drop is fun!";
 	//theHeadLine.classList.add('orange-headline');
 
 
+	//you can use variables, functions, etc inline in your code this way
+	puzzleBoard.style.backgroundImage = `url(images/background${this.id}.jpg)`;
 	//change the backgound image in the drop zone
-	puzzleBoard.getElementsByClassName.backgroundImage = 'url ("../images/backGround" + this.id +".jpg")';
+	// puzzleBoard.getElementsByClassName.backgroundImage = 'url ("../images/backGround" + this.id +".jpg")';
 }
 
 
