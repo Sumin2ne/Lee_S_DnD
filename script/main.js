@@ -45,14 +45,22 @@ function handleDrop(e) {
 	console.log('dropped on me!');
 	// e.target.appendChild(draggedPiece);
 
-	//bug fix #1 here 
+	//bug fix #1 here
 	//should only be one piece into drop zone
 	if(this.children.length>0) return;
 	this.appendChild(draggedPiece);
 }
 
 
-
+//bug fix #2 here 
+//should be removed back to the drag zone as well, so that the player has a fresh board to drop onto
+function resetBoard() {
+	dropZones.forEach(zone => {
+	while (zone.children.length > 0) {
+	puzzleBoard.appendChild(zone.children[0]);
+	}
+	});
+}
 
 function changeBGImage() { 
 	resetBoard();
