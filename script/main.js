@@ -45,30 +45,14 @@ function handleDrop(e) {
 	console.log('dropped on me!');
 	// e.target.appendChild(draggedPiece);
 
-
+	//bug fix #1 here 
+	//should only be one piece into drop zone
 	if(this.children.length>0) return;
 	this.appendChild(draggedPiece);
 }
 
 
-//bug fix #1 here
-// function handleDrop(e) {
-// 	e.preventDefault();
-// 	if (e.target.children.length > 0) {
-// 	  // if there is already a puzzle piece in the drop zone, remove it first
-// 	e.target.removeChild(e.target.children[0]);
-// 	}
-// 	e.target.appendChild(draggedPiece);
-// }
 
-//bug fix #2 here
-function resetBoard() {
-	dropZones.forEach(zone => {
-	while (zone.children.length > 0) {
-	puzzleBoard.appendChild(zone.children[0]);
-	}
-	});
-}
 
 function changeBGImage() { 
 	resetBoard();
