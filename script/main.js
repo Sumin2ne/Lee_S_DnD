@@ -1,88 +1,101 @@
-(() => {
-	// set up the puzzle pieces and boards
-	
-})();
-
-
-
 // select your elements first - what is the user going to interact with?
-//there are the target => these are what the "user" uses
+// there are the targets => these are what the "user" uses
+// this is a 1 to 1 connection to an element in the DOM
+// let navButton = document.querySelector("#navButton");
 
-//this is a 1 to 1 connection to an element in the DOM
-// let navButtons = document.querySelectorAll('#buttonOne'); 
-
-//this is a 1 to many connection to an element in the DOM
+// this is a 1 to many connection to elements in the DOM
+// the variable name is the "basket"
 let navButtons = document.querySelectorAll('#buttonHolder img'),
-	theHeadLine = document.querySelector('#headLine h1'),
-
-	//collect All of the draggable pieces in the drag zone
+	theHeadline = document.querySelector('#headLine h1'),
+	// collect ALL of the draggable pieces in the drag zone
 	puzzlePieces = document.querySelectorAll('.puzzle-pieces img'),
-	//collect All of the drop zone elements
-	dropZones =document.querySelectorAll('.drop-zone')
+	// collect ALL of the drop zone elements
+	dropZones = document.querySelectorAll('.drop-zone'),
 	puzzleBoard = document.querySelector('.puzzle-board'),
-	templink = document.querySelector('a')
-	//set up a global variable to store a reference to the dragged piece
-	//I need to know this later when I drop it on a zone
+	tempLink = document.querySelector('a'),
+	// set up a global variable to store a reference to the dragged piece
+	// i need to know this later when i drop it on a zone
 	draggedPiece;
 
+// functions go in the middle
+// these are the "actions" that should happen
+function changeBGImage() {	
+	// change the background image in the drop zone
+	// the `${}` is called a JavaScript Template String - whatever is inside the curly
+	// braces is evaluated at runtime and interpolated (replaces the bracket notation)
 
-
-
-//functions go in the middle 
-//these are the "actions" that should happen
-function changeBGImage() {
-
-	// let newBGPath ="images/backGround" + this.id +".jpg";
-	// debugger;
-	
-	//object.property = "new value"
-	//theHeadLine.textContent = "Drag and Drop is fun!";
-	//theHeadLine.classList.add('orange-headline');
-	
-	
-	//change the backgound image in the drop zone
-	//the `${}` is called a JavaScript Templete String - whatever is inline the curly
-	//braces is evaluated at runrime and interpolated (replaces the bracket notation)
-
-	//you can use variables, functions, etc inline in your code this way
+	// you can use variables, functions, etc inline in your code this way
 	puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
-	
-	// puzzleBoard.getElementsByClassName.backgroundImage = 'url ("../images/backGround" + this.id +".jpg")';
 }
 
-function handleStartDrag(){console.log('started dragging a piece!');}
+function handleStartDrag() { 
+	// store the element I am currently dragging in that global draggedPiece variable
+	draggedPiece = this;
+}
 
-function handleStartDrag(){draggedPiece = this;}
-function handleDragOver(){console.log('dragging over me!');}
-
-function handleDrop(){console.log('dropped on me!');}
+function handleDragOver(e) { 
+	e.preventDefault(); 
+	console.log('dropped over me!');
+}
 
 function handleDrop(e) {
-	//block the default behaviour
+	// block the default behaviour 
 	e.preventDefault();
+	// and then do whatever you want.
+	console.log('dropped on me!');
+	// e.target.appendChild(draggedPiece);
 
-	//and then do whatever you want.
-	console.log ('dragging over me!');
-	e.target.appendChild('')
+
+	if(this.children.length>0) return;
+	this.appendChild(draggedPiece);
 }
 
-//event handling at the bottom -> how things react when you 
-//how is the user going to interact with the elements / controls you provide?
 
-//process a collection of elements and add and event handler to each
+//bug fix #1 here
+// function handleDrop(e) {
+// 	e.preventDefault();
+// 	if (e.target.children.length > 0) {
+// 	  // if there is already a puzzle piece in the drop zone, remove it first
+// 	e.target.removeChild(e.target.children[0]);
+// 	}
+// 	e.target.appendChild(draggedPiece);
+// }
+
+//bug fix #2 here
+function resetBoard() {
+	dropZones.forEach(zone => {
+	while (zone.children.length > 0) {
+	puzzleBoard.appendChild(zone.children[0]);
+	}
+	});
+}
+
+function changeBGImage() { 
+	resetBoard();
+	puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
+}
+
+
+
+// event handling at the bottom -> how things react when you use the targets
+// how is the user going to interact with the elements / controls you provide?
+
+// 1 to 1 event handling (1 variable, one element):
+// navButton.addEventListener('click', changeBGImage);
+
+// 1 to many event handling (1 variable, many elements):
+// process a collection of elements and add an event handler to each
 navButtons.forEach(button => button.addEventListener('click', changeBGImage));
-
-//add the drag start handler to all of the puzzle pieces
+// add the drag start handler to all of the puzzle pieces
 puzzlePieces.forEach(piece => piece.addEventListener('dragstart', handleStartDrag));
-//add the drager handling to the drop zones
+// add the dragover handling to the drop zones
 dropZones.forEach(zone => zone.addEventListener('dragover', handleDragOver));
 dropZones.forEach(zone => zone.addEventListener('drop', handleDrop));
 
-function blockDefaultBehaviour(e) { 
-	// e is shorthand for event -> in this case the nav event
-	//don't let the defaut behaviour of certainelements happen - block it 
+function blockDefaultBehaviour(e) { // e is shorthand for event -> in this case the nav event
+	// don't let the default behaviour of certain elements happen - block it
 	e.preventDefault();
 }
 
 // temp handling
-templink.addEventListener ('click', blockDefaultBehaviour);
+tempLink.addEventListener('click', blockDefaultBehaviour);
