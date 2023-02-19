@@ -23,12 +23,13 @@ function changeBGImage() {
 	// change the background image in the drop zone
 	// the `${}` is called a JavaScript Template String - whatever is inside the curly
 	// braces is evaluated at runtime and interpolated (replaces the bracket notation)
-
+	let newBGPath = "images/backGround" + this.id + ".jpg";
 	// you can use variables, functions, etc inline in your code this way
 	puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
 }
 
 function handleStartDrag() { 
+	console. log('started draggin a piece!',this);
 	// store the element I am currently dragging in that global draggedPiece variable
 	draggedPiece = this;
 }
@@ -54,21 +55,34 @@ function handleDrop(e) {
 
 //bug fix #2 here 
 //should be removed back to the drag zone as well, so that the player has a fresh board to drop onto
-function resetBoard() {
+function newPuzzle() {
+	// Remove all children from the drop zones and move them back to the puzzle piece section
 	dropZones.forEach(zone => {
 	while (zone.children.length > 0) {
 	puzzleBoard.appendChild(zone.children[0]);
 	}
 	});
+
+
+// function changeBGImage() { 
+// 	resetBoard();
+// 	puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
+// }
+
+	const selectedButton = document.querySelector('.selected');
+	if (selectedButton) {
+	puzzleBoard.style.backgroundImage = `url(images/backGround${this})`;
+	}
+
+	const puzzlePieceContainer = document.querySelector('.puzzle-pieces');
+	puzzlePieceContainer.innerHTML = '';
+	puzzlePieces.forEach(piece => {
+	puzzlePieceContainer.appendChild(piece);
+	});
+
+	shufflePieces();
+
 }
-
-function changeBGImage() { 
-	resetBoard();
-	puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
-}
-
-
-
 // event handling at the bottom -> how things react when you use the targets
 // how is the user going to interact with the elements / controls you provide?
 
@@ -91,3 +105,6 @@ function blockDefaultBehaviour(e) { // e is shorthand for event -> in this case 
 
 // temp handling
 tempLink.addEventListener('click', blockDefaultBehaviour);
+
+const buttonHolder = document.querySelector('#buttonHolder');
+buttonHolder.addEventListener('click', newPuzzle);
